@@ -1,0 +1,22 @@
+{
+  "name": "gonzaflights",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gonzadocarmo/flights-check.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gonzadocarmo/flights-check/issues"
+  },
+  "homepage": "https://github.com/gonzadocarmo/flights-check",
+  "devDependencies": {
+    "selenium-webdriver": "^2.46.1"
+  }
+}
