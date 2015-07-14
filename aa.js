@@ -9,24 +9,23 @@ var resultsPage = require('./pages/aa/resultsPage.js');
 // VARIABLES DEFINITION
 var ORIGIN = "EZE";
 var DESTINATION = "DFW";
-var DEPARTURE_DATE = "10-Aug";
-var RETURN_DATE = "20-Aug";
+var DEPARTURE_DATE = "17-Jul";
+var RETURN_DATE = "04-May";
 // VARIABLES DEFINITION
 
 var driver = new webdriver.Builder().
-    withCapabilities(webdriver.Capabilities.chrome()).
-    build();
+withCapabilities(webdriver.Capabilities.chrome()).
+build();
 
-	searchPage.searchOW(driver, ORIGIN, DESTINATION, DEPARTURE_DATE).then(function(){
-	
-		resultsPage.getResults(driver).then(function(results){
-			// console.log(results);
-			if(results.length > 0){
-				console.log("Sending email...");
-				//EMAIL NOTIFICATION
-				emailService.notify('aa', results);
-			}
-			console.log ("finished!");
-			driver.quit();
-		});
-	});
+searchPage.searchRT(driver, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE).then(function() {
+    // searchPage.searchOW(driver, ORIGIN, DESTINATION, DEPARTURE_DATE).then(function(){
+
+    resultsPage.getResultsRT(driver).then(function(results) {
+		emailService.notify('aa', results);
+		console.log("Success!");
+        driver.quit();
+    }, function(errorMsg) {
+        console.log("Rejected: " + errorMsg);
+        driver.quit();
+    });
+});
