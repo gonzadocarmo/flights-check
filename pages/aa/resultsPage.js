@@ -6,7 +6,7 @@ function search(driver) {
 
     return awards_promise.then(function(awards) {
 
-        var DESIRED_AWARD_INDEX = 0;
+        var DESIRED_AWARD_INDEX = 1;
 		// 0 - Economy MilesSAAver
 		// 1 - Economy AAnytime
 

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/gonzadocarmo/flights-check",
   "devDependencies": {
+    "mandrill-api": "^1.0.45",
     "selenium-webdriver": "^2.46.1"
   }
 }
