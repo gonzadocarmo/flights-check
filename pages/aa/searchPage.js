@@ -26,8 +26,8 @@ function search(driver, flightType, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_
         destination_apt.sendKeys(DESTINATION);
 
         //awardFlightSearchForm.datesFlexible.true
-        var dates_type = driver.findElement(By.id("awardFlightSearchForm.datesFlexible.true"));
-        dates_type.click();
+        // var dates_type = driver.findElement(By.id("awardFlightSearchForm.datesFlexible.true"));
+        // dates_type.click();
 
         var origin_month = driver.findElement(By.id("awardFlightSearchForm.flightParams.flightDateParams.travelMonth"));
         origin_month.click();
@@ -35,7 +35,7 @@ function search(driver, flightType, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_
 
         var origin_day = driver.findElement(By.id("awardFlightSearchForm.flightParams.flightDateParams.travelDay"));
         origin_day.click();
-        origin_day.sendKeys(DEPARTURE_DATE.substring(0,2));
+        origin_day.sendKeys(parseInt(DEPARTURE_DATE.substring(0,2)));
 
         if (IS_ROUND_TRIP) {
             var destination_month = driver.findElement(By.id("awardFlightSearchForm.returnDate.travelMonth"));
@@ -44,7 +44,7 @@ function search(driver, flightType, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_
 
             var destination_day = driver.findElement(By.id("awardFlightSearchForm.returnDate.travelDay"));
             destination_day.click();
-            destination_day.sendKeys(RETURN_DATE.substring(0,2));
+            destination_day.sendKeys(parseInt(RETURN_DATE.substring(0,2)));
         }
 
 
@@ -65,10 +65,8 @@ function search(driver, flightType, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_
         M - miles saver
         A - anytime */
 
-
         return driver.findElement(By.id("awardFlightSearchForm.button.go")).click();
     });
-
 }
 
 
