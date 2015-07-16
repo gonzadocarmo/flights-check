@@ -20,8 +20,12 @@ build();
 // searchPage.searchRT(ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE).then(function() {
     searchPage.searchOW(ORIGIN, DESTINATION, DEPARTURE_DATE).then(function(){
 
-    resultsPage.getResultsOW().then(function(results) {
-		emailService.notify('aa', results);
+    // resultsPage.getResultsRT().then(function(results) {
+	resultsPage.getResultsOW().then(function(results) {
+	
+		// emailService.notify('aa', results, DEPARTURE_DATE, RETURN_DATE);
+		emailService.notify('aa', results, DEPARTURE_DATE);
+		
 		console.log("Success!");
     }, function(errorMsg) {
         console.log("Error occurred: " + errorMsg);
