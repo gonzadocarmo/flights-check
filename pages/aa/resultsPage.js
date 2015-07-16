@@ -29,15 +29,15 @@ function lookPossibleAvailableAwardsForInbound(className){
 }
 
 function lookPossibleAvailableAwards(isOutbound, className){
-    console.log("--------------------lookPossibleAvailableAwards--------------------");
-    console.log("classsname: " + className);
-    console.log("isOutbound: " + isOutbound);
+    // console.log("--------------------lookPossibleAvailableAwards--------------------");
+    // console.log("classsname: " + className);
+    // console.log("isOutbound: " + isOutbound);
     var LEG_INDEX = isOutbound ? 0 : 1;
 	var LEG_TXT = isOutbound ? "outbound" : "inbound"
     if (className.indexOf("caAwardInactive") > -1) {
         return Promise.reject("Award NOT AVAILABLE for " + LEG_TXT + " flight");
     } else {
-        console.log("openinig calendar...");
+        // console.log("openinig calendar...");
         openCalendar(LEG_INDEX);
         return driver.findElements(By.css("#calContainer_" + LEG_INDEX + " li:not(.header) dl:not(.inactive)"));
     }
@@ -68,8 +68,6 @@ function lookAvailableAwardsForInbound(possibleInboundAwards) {
 
     results_inbound = new Array();
 
-    console.log("inboud elements " + possibleInboundAwards.length);
-
     for (i = 0; i < possibleInboundAwards.length; i++) {
 
         var textinside;
@@ -78,26 +76,22 @@ function lookAvailableAwardsForInbound(possibleInboundAwards) {
         });
 
         possibleInboundAwards[i].getAttribute('class').then(function(className) {
-            console.log("element: " + textinside);
-
             if (className.indexOf('nodata') > -1) {
-                console.log("class nodata... skipping...");
+                // console.log("class nodata... skipping...");
             } else {
                 results_inbound.push(textinside);
             }
         });
 
     }
-
     return Promise.resolve(results_inbound);
 }
 
 function getAllAwardsHeaders() {
-    console.log("step1 - init...");
     return driver.findElements(By.css(".legend_w6"));
 }
 
-function getFirstHeaderAwardCssForOutbound(){
+function getFirstHeaderAwardCssForOutbound(headerAwards){
 	return getFirstHeaderAwardCss(headerAwards[0]);
 }
 
@@ -106,7 +100,6 @@ function getFirstHeaderAwardCssForInbound(headerAwards){
 }
 
 function getFirstHeaderAwardCss(headerAward) {
-    console.log("getFirstHeaderAwardCss ---> value: " + headerAwards);
     return headerAward.getAttribute('class');
 }
 
@@ -118,8 +111,6 @@ function checkResultsRT() {
     return getAllAwardsHeaders()
         .then(function(awardsHeadersResults) {
             header_awards = awardsHeadersResults;
-            console.log("aaaaaa");
-            console.log(header_awards);
             return awardsHeadersResults;
         })
         .then(getFirstHeaderAwardCssForOutbound)
@@ -127,8 +118,8 @@ function checkResultsRT() {
         .then(lookAvailableAwardsForOutbound)
 
     .then(function(outboundAwardsResults) {
-		console.log(outboundAwardsResults);
-		console.log("outbound results recorded!");
+		// console.log(outboundAwardsResults);
+		// console.log("outbound results recorded!");
         awards_available.push(outboundAwardsResults);
 		return header_awards;
     })
@@ -136,11 +127,8 @@ function checkResultsRT() {
     .then(lookPossibleAvailableAwardsForInbound)
     .then(lookAvailableAwardsForInbound)
     .then(function(inboundAwardsResults){
-		console.log("current awardas: " + awards_available);
 		awards_available.push("|");
-		console.log("current awardas: " + awards_available);
 		awards_available.push(inboundAwardsResults);
-		console.log("current awardas: " + awards_available);
 		return awards_available;
     });
 }
