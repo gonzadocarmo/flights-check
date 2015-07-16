@@ -13,27 +13,27 @@ function openCalendar(index) {
 
 function checkResultsOW() {
     return getAllAwardsHeaders()
-	 .then(getFirstHeaderAwardCssForOutbound)
-	 .then(lookPossibleAvailableAwardsForOutbound)
-	 .then(lookAvailableAwardsForOutbound);
+        .then(getFirstHeaderAwardCssForOutbound)
+        .then(lookPossibleAvailableAwardsForOutbound)
+        .then(lookAvailableAwardsForOutbound);
 }
 
-function lookPossibleAvailableAwardsForOutbound(className){
+function lookPossibleAvailableAwardsForOutbound(className) {
     // console.log("lookPossibleAvailableAwardsForOutbound");
     return lookPossibleAvailableAwards(true, className);
 }
 
-function lookPossibleAvailableAwardsForInbound(className){
-	// console.log("lookPossibleAvailableAwardsForInbound");
+function lookPossibleAvailableAwardsForInbound(className) {
+    // console.log("lookPossibleAvailableAwardsForInbound");
     return lookPossibleAvailableAwards(false, className);
 }
 
-function lookPossibleAvailableAwards(isOutbound, className){
+function lookPossibleAvailableAwards(isOutbound, className) {
     // console.log("--------------------lookPossibleAvailableAwards--------------------");
     // console.log("classsname: " + className);
     // console.log("isOutbound: " + isOutbound);
     var LEG_INDEX = isOutbound ? 0 : 1;
-	var LEG_TXT = isOutbound ? "outbound" : "inbound"
+    var LEG_TXT = isOutbound ? "outbound" : "inbound"
     if (className.indexOf("caAwardInactive") > -1) {
         return Promise.reject("Award NOT AVAILABLE for " + LEG_TXT + " flight");
     } else {
@@ -65,11 +65,9 @@ function lookAvailableAwardsForOutbound(possibleAwards) {
 }
 
 function lookAvailableAwardsForInbound(possibleInboundAwards) {
-
     results_inbound = new Array();
 
     for (i = 0; i < possibleInboundAwards.length; i++) {
-
         var textinside;
         possibleInboundAwards[i].getText().then(function(elTxt) {
             textinside = elTxt.replace(/\n/g, "-");;
@@ -91,12 +89,12 @@ function getAllAwardsHeaders() {
     return driver.findElements(By.css(".legend_w6"));
 }
 
-function getFirstHeaderAwardCssForOutbound(headerAwards){
-	return getFirstHeaderAwardCss(headerAwards[0]);
+function getFirstHeaderAwardCssForOutbound(headerAwards) {
+    return getFirstHeaderAwardCss(headerAwards[0]);
 }
 
-function getFirstHeaderAwardCssForInbound(headerAwards){
-	return getFirstHeaderAwardCss(headerAwards[6]);
+function getFirstHeaderAwardCssForInbound(headerAwards) {
+    return getFirstHeaderAwardCss(headerAwards[6]);
 }
 
 function getFirstHeaderAwardCss(headerAward) {
@@ -116,21 +114,20 @@ function checkResultsRT() {
         .then(getFirstHeaderAwardCssForOutbound)
         .then(lookPossibleAvailableAwardsForOutbound)
         .then(lookAvailableAwardsForOutbound)
-
-    .then(function(outboundAwardsResults) {
-		// console.log(outboundAwardsResults);
-		// console.log("outbound results recorded!");
-        awards_available.push(outboundAwardsResults);
-		return header_awards;
-    })
-    .then(getFirstHeaderAwardCssForInbound)
-    .then(lookPossibleAvailableAwardsForInbound)
-    .then(lookAvailableAwardsForInbound)
-    .then(function(inboundAwardsResults){
-		awards_available.push("|");
-		awards_available.push(inboundAwardsResults);
-		return awards_available;
-    });
+        .then(function(outboundAwardsResults) {
+            // console.log(outboundAwardsResults);
+            // console.log("outbound results recorded!");
+            awards_available.push(outboundAwardsResults);
+            return header_awards;
+        })
+        .then(getFirstHeaderAwardCssForInbound)
+        .then(lookPossibleAvailableAwardsForInbound)
+        .then(lookAvailableAwardsForInbound)
+        .then(function(inboundAwardsResults) {
+            awards_available.push("|");
+            awards_available.push(inboundAwardsResults);
+            return awards_available;
+        });
 }
 
 module.exports.getResultsOW = checkResultsOW;
