@@ -1,5 +1,4 @@
 By = require('selenium-webdriver').By;
-Promise = require('promise');
 
 function openCalendar(index) {
     var element = driver.findElement(By.id("calTabLink_" + index));
