@@ -1,14 +1,14 @@
 By = require('selenium-webdriver').By;
 
-function searchOneWay(driver, ORIGIN, DESTINATION, DEPARTURE_DATE){
-    return search(driver, 'OW', ORIGIN, DESTINATION, DEPARTURE_DATE);
+function searchOneWay(ORIGIN, DESTINATION, DEPARTURE_DATE){
+    return search('OW', ORIGIN, DESTINATION, DEPARTURE_DATE);
 }
 
-function searchRoundTrip(driver, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE) {
-    return search(driver, 'RT', ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE);
+function searchRoundTrip(ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE) {
+    return search('RT', ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE);
 }
 
-function search(driver, flightType, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE) {
+function search(flightType, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE) {
 
     var URL = 'http://www.aa.com/reservation/awardFlightSearchAccess.do';
     var IS_ROUND_TRIP = flightType == "RT";

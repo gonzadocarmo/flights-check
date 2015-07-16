@@ -51,7 +51,7 @@ function lookAvailableAwards(possibleAwards) {
     return Promise.resolve(results);
 }
 
-function checkResultsRT(driver) {
+function checkResultsRT() {
 
     var awards_promise = driver.findElements(By.css(".legend_w6"));
 
@@ -71,7 +71,7 @@ function checkResultsRT(driver) {
                 return Promise.reject("Award NOT AVAILABLE for outbound flight");
             } else {
                 // open full calendar
-                openCalendar(driver, 0);
+                openCalendar(0);
 
                 available_awards_promise = driver.findElements(By.css("#calContainer_0 li:not(.header) dl:not(.inactive)"));
 
@@ -106,7 +106,7 @@ function checkResultsRT(driver) {
                         } else {
 
 
-                            openCalendar(driver, 1);
+                            openCalendar(1);
 
                             available_awards_promise = driver.findElements(By.css("#calContainer_1 li:not(.header) dl:not(.inactive)"));
 

@@ -17,15 +17,16 @@ driver = new webdriver.Builder().
 withCapabilities(webdriver.Capabilities.chrome()).
 build();
 
-// searchPage.searchRT(driver, ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE).then(function() {
-    searchPage.searchOW(driver, ORIGIN, DESTINATION, DEPARTURE_DATE).then(function(){
+// searchPage.searchRT(ORIGIN, DESTINATION, DEPARTURE_DATE, RETURN_DATE).then(function() {
+    searchPage.searchOW(ORIGIN, DESTINATION, DEPARTURE_DATE).then(function(){
 
     resultsPage.getResultsOW().then(function(results) {
 		emailService.notify('aa', results);
 		console.log("Success!");
-        driver.quit();
     }, function(errorMsg) {
-        console.log("Rejected: " + errorMsg);
-        driver.quit();
-    });
+        console.log("Error occurred: " + errorMsg);
+    })
+	.then(function(){
+		driver.quit();
+	});
 });
