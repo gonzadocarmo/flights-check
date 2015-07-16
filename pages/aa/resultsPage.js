@@ -154,7 +154,7 @@ function evaluateClassName(classname){
 		}
 }
 
-function lookAvailableAwardsInbound(possibleInboundAwards) {
+function lookAvailableAwardsForInbound(possibleInboundAwards) {
 
     results_inbound = new Array();
 
@@ -192,6 +192,11 @@ function getClassName(headerAwards) {
     return headerAwards[0].getAttribute('class');
 }
 
+function getClassNameForInbound(headerAwards) {
+    console.log("getClassName ---> value: " + headerAwards);
+    return headerAwards[6].getAttribute('class');
+}
+
 function checkResultsRT() {
 
     header_awards = new Array();
@@ -202,31 +207,31 @@ function checkResultsRT() {
             header_awards = awardsHeadersResults;
             console.log("aaaaaa");
             console.log(header_awards);
-            return header_awards[0];
+            return awardsHeadersResults;
         })
         .then(getClassName)
-        .then(lookPossibleAvailableAwardsOutbound)
-        .then(lookAvailableAwardsOutbound)
+        .then(lookPossibleAvailableAwardsForOutbound)
+        .then(lookAvailableAwards)
 
     .then(function(outboundAwardsResults) {
-	console.log("outboundAwardsResults -....... " + outboundAwardsResults.length);
-	console.log(outboundAwardsResults);
+		console.log("outboundAwardsResults -....... " + outboundAwardsResults.length);
+		console.log(outboundAwardsResults);
+		console.log("outbound results recorded!");
+	
         awards_available.push(outboundAwardsResults);
+		return header_awards;
+    })
+    .then(getClassNameForInbound)
+    .then(lookPossibleAvailableAwardsForInbound)
+    .then(lookAvailableAwardsForInbound)
+    .then(function(inboundAwardsResults){
+		console.log("current awardas: " + awards_available);
+		awards_available.push("|");
+		console.log("current awardas: " + awards_available);
+		awards_available.push(inboundAwardsResults);
+		console.log("current awardas: " + awards_available);
 		return awards_available;
-        // return Promise.resolve("aaaa");
-        // return 777;
     });
-    // .then(getClassName(header_awards))
-    // .then(lookPossibleAvailableAwardsInbound)
-    // .then(lookAvailableAwardsInbound)
-    // .then(function(inboundAwardsResults){
-    // console.log("current awardas: " + awards_available);
-    // awards_available.push("|");
-    // console.log("current awardas: " + awards_available);
-    // awards_available.push(inboundAwardsResults);
-    // console.log("current awardas: " + awards_available);
-    // return Promise.resolve(awards_available);
-    // });
 }
 
 module.exports.getResultsOW = checkResultsOW;
