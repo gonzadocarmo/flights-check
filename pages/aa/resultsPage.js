@@ -4,9 +4,8 @@ Promise = require('promise');
 function openCalendar(index) {
     var element = driver.findElement(By.id("calTabLink_" + index));
     element.getText().then(function(text) {
-        console.log("button text: " + text);
         if (text.indexOf("Close") == -1) {
-            console.log("clicking button to open...");
+            // console.log("clicking button to open...");
             element.click();
         }
     });
@@ -14,18 +13,18 @@ function openCalendar(index) {
 
 function checkResultsOW() {
     return getAllAwardsHeaders()
-	 .then(getClassName)
+	 .then(getFirstHeaderAwardCssForOutbound)
 	 .then(lookPossibleAvailableAwardsForOutbound)
-	 .then(lookAvailableAwards);
+	 .then(lookAvailableAwardsForOutbound);
 }
 
 function lookPossibleAvailableAwardsForOutbound(className){
-    console.log("lookPossibleAvailableAwardsForOutbound");
+    // console.log("lookPossibleAvailableAwardsForOutbound");
     return lookPossibleAvailableAwards(true, className);
 }
 
 function lookPossibleAvailableAwardsForInbound(className){
-	console.log("lookPossibleAvailableAwardsForInbound");
+	// console.log("lookPossibleAvailableAwardsForInbound");
     return lookPossibleAvailableAwards(false, className);
 }
 
@@ -45,82 +44,6 @@ function lookPossibleAvailableAwards(isOutbound, className){
 }
 
 function lookAvailableAwardsForOutbound(possibleAwards) {
-    console.log("possibleAwards.length: " + possibleAwards.length);
-    console.log("possibleAwards...." + possibleAwards);
-
-    results = new Array();
-
-    for (i = 0; i < possibleAwards.length; i++) {
-	
-		console.log("current elem: " + i);
-		
-		var currentElement = possibleAwards[i];
-		
-		var class_promise = currentElement.getAttribute('class');
-		// var text_promise = currentElement.getText();
-		
-		// class_promise.then(function(classname){
-			// console.log("nombre de clase: " + classname);
-			// results.push(classname);
-			// return classname;
-			
-			 // if (className.indexOf('nodata') > -1) {
-                    // console.log("class nodata... skipping...");
-                // } else {
-                    // var textinside;
-                    // text_promise.then(function(elTxt) {
-                        // textinside = elTxt.replace(/\n/g, "-");
-                        // console.log("text " + i + "- " + elTxt);
-                        // results.push(textinside)
-                    // });
-		
-				// }
-				
-				// });
-				
-				
-				
-		class_promise
-		.then(evaluateClassName)
-		.then(function(response){
-			console.log("aading to results...");
-			results.push(response)
-		})
-		
-	}
-	
-        // new Promise(function(resolve, reject) {
-
-            
-
-            // return possibleAwards[i].getAttribute('class').then(function(className) {
-                // console.log("classname: " + i);
-
-                // if (className.indexOf('nodata') > -1) {
-                    // reject("class nodata... skipping...");
-                // } else {
-                    // var textinside;
-                    // possibleAwards[i].getText().then(function(elTxt) {
-                        // textinside = elTxt.replace(/\n/g, "-");
-                        // console.log("text " + i + "- " + elTxt);
-                        // resolve(textinside)
-                    // });
-                // }
-            // });
-
-        // }).then(function(response) {
-            // results.push(response);
-        // }, function(error){
-			// console.log(error + " ---------------------------skipping GON....");
-		// });
-    // }
-
-    // return ["111","222","3333","444"];
-	return results;
-
-}
-
-function lookAvailableAwards(possibleAwards) {
     results = new Array();
 
     for (i = 0; i < possibleAwards.length; i++) {
@@ -139,19 +62,6 @@ function lookAvailableAwards(possibleAwards) {
         });
     }
     return Promise.resolve(results);
-}
-
-function evaluateClassName(classname){
-	
-		console.log("evaluateClassName - nombre de clase: " + classname);
-
-		if (className.indexOf('nodata') > -1) {
-			console.log("class nodata... skipping...");
-			// Promise.reject("class nodata... skipping... - martin");
-		}
-		else {
-			// Promise.resolve(classname);
-		}
 }
 
 function lookAvailableAwardsForInbound(possibleInboundAwards) {
@@ -187,14 +97,17 @@ function getAllAwardsHeaders() {
     return driver.findElements(By.css(".legend_w6"));
 }
 
-function getClassName(headerAwards) {
-    console.log("getClassName ---> value: " + headerAwards);
-    return headerAwards[0].getAttribute('class');
+function getFirstHeaderAwardCssForOutbound(){
+	return getFirstHeaderAwardCss(headerAwards[0]);
 }
 
-function getClassNameForInbound(headerAwards) {
-    console.log("getClassName ---> value: " + headerAwards);
-    return headerAwards[6].getAttribute('class');
+function getFirstHeaderAwardCssForInbound(headerAwards){
+	return getFirstHeaderAwardCss(headerAwards[6]);
+}
+
+function getFirstHeaderAwardCss(headerAward) {
+    console.log("getFirstHeaderAwardCss ---> value: " + headerAwards);
+    return headerAward.getAttribute('class');
 }
 
 function checkResultsRT() {
@@ -209,19 +122,17 @@ function checkResultsRT() {
             console.log(header_awards);
             return awardsHeadersResults;
         })
-        .then(getClassName)
+        .then(getFirstHeaderAwardCssForOutbound)
         .then(lookPossibleAvailableAwardsForOutbound)
-        .then(lookAvailableAwards)
+        .then(lookAvailableAwardsForOutbound)
 
     .then(function(outboundAwardsResults) {
-		console.log("outboundAwardsResults -....... " + outboundAwardsResults.length);
 		console.log(outboundAwardsResults);
 		console.log("outbound results recorded!");
-	
         awards_available.push(outboundAwardsResults);
 		return header_awards;
     })
-    .then(getClassNameForInbound)
+    .then(getFirstHeaderAwardCssForInbound)
     .then(lookPossibleAvailableAwardsForInbound)
     .then(lookAvailableAwardsForInbound)
     .then(function(inboundAwardsResults){
