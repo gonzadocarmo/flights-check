@@ -5,28 +5,38 @@ function openCalendar(index) {
     driver.findElement(By.id("calTabLink_" + index)).click();
 }
 
-function checkResultsOW() {
-
-    step1 = driver.findElements(By.css(".legend_w6"));
-    step2 = function(awards) {
-        //0 - Economy MilesSAAver
-        return awards[0].getAttribute('class');
-    };
-    step3 = lookPossibleAvailableAwards;
-    step4 = lookAvailableAwards;
-
-    return step1
-        .then(step2)
-        .then(step3)
-        .then(step4);
+function getAllAwardsHeaders(){
+	return driver.findElements(By.css(".legend_w6"));
 }
 
-function lookPossibleAvailableAwards(className) {
+function getClassName(awardsHeaders){
+// 0 - Economy SAAver
+	return awardsHeaders[0].getAttribute('class');
+}
+
+function checkResultsOW() {
+    return getAllAwardsHeaders()
+        .then(getClassName)
+        .then(lookPossibleAvailableAwardsForOutbound)
+        .then(lookAvailableAwards);
+}
+
+function lookPossibleAvailableAwardsForOutbound(className){
+	return lookPossibleAvailableAwards(true, className);
+}
+
+function lookPossibleAvailableAwardsForInbound(className){
+	return lookPossibleAvailableAwards(false, className);
+}
+
+function lookPossibleAvailableAwards(isOutbound, className) {
+	var LEG_INDEX = isOutbound ? 0 : 1;
+	var LEG_TXT = isOutbound ? "outbound" : "inbound";
     if (className.indexOf("caAwardInactive") > -1) {
-        return Promise.reject("Award NOT AVAILABLE for outbound flight");
+        return Promise.reject("Award NOT AVAILABLE for " + LEG_TXT + " flight");
     } else {
-        openCalendar(0);
-        return driver.findElements(By.css("#calContainer_0 li:not(.header) dl:not(.inactive)"));
+        openCalendar(LEG_INDEX);
+        return driver.findElements(By.css("#calContainer_" + LEG_INDEX + " li:not(.header) dl:not(.inactive)"));
     }
 }
 
